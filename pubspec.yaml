@@ -38,7 +38,16 @@ dependencies:
   # State management, reactive streams, DI, navigation
   get: ^4.6.1
 
+  # A Logger
   loggy: ^2.0.1+1
+
+  # Make HTTP Requests
+  dio: ^4.0.4
+
+  # Interface style http requests
+  retrofit: '>=3.0.0 <4.0.0'
+
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +59,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+  # Retrofit dev dependencies
+  retrofit_generator: '>=4.0.0 <5.0.0'
+  build_runner: ^2.1.7
+  json_serializable: '>4.4.0'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
