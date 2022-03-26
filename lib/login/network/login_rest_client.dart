@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
+import '../../core/network/response_data.dart';
 import 'model/user_dto.dart';
 
 part 'login_rest_client.g.dart';

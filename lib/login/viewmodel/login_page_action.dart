@@ -1,11 +1,11 @@
-import '../network/model/user_dto.dart';
+import '../model/user.dart';
 
 class LoginPageAction {
   LoginPageAction._();
 
   factory LoginPageAction.onEnterClicked() = OnEnterClicked;
   factory LoginPageAction.onResetClicked() = OnResetClicked;
-  factory LoginPageAction.usersLoaded(List<UserDto> users) = UsersLoaded;
+  factory LoginPageAction.usersLoaded(User user) = UserLoaded;
 }
 
 class OnEnterClicked extends LoginPageAction {
@@ -16,8 +16,8 @@ class OnResetClicked extends LoginPageAction {
   OnResetClicked(): super._();
 }
 
-class UsersLoaded extends LoginPageAction {
-  List<UserDto> users;
+class UserLoaded extends LoginPageAction {
+  User user;
 
-  UsersLoaded(this.users): super._();
+  UserLoaded(this.user): super._();
 }

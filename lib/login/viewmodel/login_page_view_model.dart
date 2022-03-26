@@ -1,8 +1,11 @@
+import 'package:flutter_demo_app/core/database/object_box.dart';
 import 'package:flutter_demo_app/login/network/login_rest_client.dart';
+import 'package:flutter_demo_app/login/repository/user_repository.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../core/mvi/stateful_view_model.dart';
+import '../database/user_dao.dart';
+import '../model/user.dart';
 import '../network/model/user_dto.dart';
 import 'login_page_action.dart';
 import 'login_page_state.dart';
@@ -10,13 +13,13 @@ import 'login_page_state.dart';
 class LoginPageViewModel
     extends StatefulViewModel<LoginPageState, LoginPageAction> {
 
-  final LoginRestClient client = Get.find();
+  final UserRepository _userRepository = Get.find();
 
   LoginPageViewModel(): super(
-      LoginPageState(
+      const LoginPageState(
         isLoading: false,
         counter: 0,
-        users: List.empty()
+        user: null
       )
   );
 
@@ -29,8 +32,8 @@ class LoginPageViewModel
         case OnResetClicked:
           _reduceReset();
           break;
-        case UsersLoaded:
-          _reduceUsersLoaded((action as UsersLoaded).users);
+        case UserLoaded:
+          _reduceUserLoaded((action as UserLoaded).user);
           break;
       }
   }
@@ -43,25 +46,25 @@ class LoginPageViewModel
         )
     );
 
-    var response = await client.getUsers();
-    List<UserDto> users = response.data ?? List.empty();
-    send(UsersLoaded(users));
+    _userRepository.getUser().listen((user) {
+      send(UserLoaded(user));
+    });
   }
 
   void _reduceReset() {
     updateState(
         state.copyWith(
           isLoading: false,
-          users: List.empty()
+          user: null
         )
     );
   }
 
-  void _reduceUsersLoaded(List<UserDto> users) {
+  void _reduceUserLoaded(User user) {
     updateState(
         state.copyWith(
           isLoading: false,
-          users: users
+          user: user
         )
     );
   }

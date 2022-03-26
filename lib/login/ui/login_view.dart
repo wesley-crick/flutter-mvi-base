@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo_app/util/dimens.dart';
 import 'package:get/get.dart';
 import '../../util/form_factor.dart';
 import '../viewmodel/login_page_action.dart';
@@ -13,7 +12,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) =>
       Scaffold(
         appBar: AppBar(
-          title: const Text("Title"),
+          title: const Text("Login View Title"),
         ),
         body: _buildBody()
       );
@@ -53,7 +52,7 @@ class LoginView extends StatelessWidget {
                           ),
                           child: const Text("RESET")
                       ),
-                      Text("Number of users: ${vm.state.users.length}")
+                      Text("User's name': ${vm.state.user?.name}")
                     ],
                   ),
                 ),

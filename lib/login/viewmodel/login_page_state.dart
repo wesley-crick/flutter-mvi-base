@@ -1,17 +1,19 @@
 import 'package:flutter_demo_app/login/network/model/user_dto.dart';
 
+import '../model/user.dart';
+
 class LoginPageState {
   final bool isLoading;
   final int counter;
   // TODO: dto's should be converted to view objects(VO)
-  final List<UserDto> users;
+  final User? user;
 
 //<editor-fold desc="Data Methods">
 
   const LoginPageState({
     required this.isLoading,
     required this.counter,
-    required this.users,
+    required this.user,
   });
 
   @override
@@ -21,29 +23,29 @@ class LoginPageState {
           runtimeType == other.runtimeType &&
           isLoading == other.isLoading &&
           counter == other.counter &&
-          users == other.users);
+          user == other.user);
 
   @override
-  int get hashCode => isLoading.hashCode ^ counter.hashCode ^ users.hashCode;
+  int get hashCode => isLoading.hashCode ^ counter.hashCode ^ user.hashCode;
 
   @override
   String toString() {
     return 'LoginPageState{' +
         ' isLoading: $isLoading,' +
         ' counter: $counter,' +
-        ' users: $users,' +
+        ' user: $user,' +
         '}';
   }
 
   LoginPageState copyWith({
     bool? isLoading,
     int? counter,
-    List<UserDto>? users,
+    User? user,
   }) {
     return LoginPageState(
       isLoading: isLoading ?? this.isLoading,
       counter: counter ?? this.counter,
-      users: users ?? this.users,
+      user: user,
     );
   }
 
@@ -51,7 +53,7 @@ class LoginPageState {
     return {
       'isLoading': this.isLoading,
       'counter': this.counter,
-      'users': this.users,
+      'users': this.user,
     };
   }
 
@@ -59,7 +61,7 @@ class LoginPageState {
     return LoginPageState(
       isLoading: map['isLoading'] as bool,
       counter: map['counter'] as int,
-      users: map['users'] as List<UserDto>,
+      user: map['user'] as User,
     );
   }
 

@@ -48,6 +48,9 @@ dependencies:
   retrofit: '>=3.0.0 <4.0.0'
 
   json_annotation: ^4.4.0
+  objectbox: ^1.4.1
+  objectbox_flutter_libs: ^1.4.1
+  path_provider: 2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +67,7 @@ dev_dependencies:
   retrofit_generator: '>=4.0.0 <5.0.0'
   build_runner: ^2.1.7
   json_serializable: '>4.4.0'
+  objectbox_generator: 1.4.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo_app/login/ui/login_page.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
 
-void main() {
+import 'core/database/object_box.dart';
+
+late ObjectBox objectbox;
+
+void main() async {
   Loggy.initLoggy();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  objectbox = await ObjectBox.create();
+
   runApp(const MyApp());
 }
 
@@ -22,6 +31,9 @@ class MyApp extends StatelessWidget {
       getPages: [
         LoginPage().getPage(),
       ],
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut<ObjectBox>(() => objectbox);
+      }),
     );
   }
 }
