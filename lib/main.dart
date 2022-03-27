@@ -2,23 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo_app/login/ui/login_page.dart';
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
-
 import 'core/database/object_box.dart';
 
-late ObjectBox objectbox;
-
 void main() async {
-  Loggy.initLoggy();
-
   WidgetsFlutterBinding.ensureInitialized();
+  ObjectBox objectbox = await ObjectBox.create();
 
-  objectbox = await ObjectBox.create();
-
-  runApp(const MyApp());
+  runApp(MyApp(objectbox));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final ObjectBox objectbox;
+
+  MyApp(this.objectbox, {Key? key}) : super(key: key) {
+    Loggy.initLoggy();
+  }
 
   @override
   Widget build(BuildContext context) {
