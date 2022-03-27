@@ -1,6 +1,8 @@
 import 'package:flutter_demo_app/core/database/object_box.dart';
+import 'package:flutter_demo_app/login/ui/login_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_demo_app/main.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mockito/annotations.dart';
 import 'widget_test.mocks.dart';
 
@@ -13,11 +15,6 @@ void main() async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp(objectbox));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('Enter'), findsOneWidget);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.text('Enter'));
-    await tester.pump();
+    expect(find.byType(GetMaterialApp), findsOneWidget);
   });
 }
