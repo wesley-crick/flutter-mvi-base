@@ -1,3 +1,5 @@
+[![CI](https://github.com/wesley-crick/flutter-mvi-base/actions/workflows/main.yml/badge.svg)](https://github.com/wesley-crick/flutter-mvi-base/actions/workflows/main.yml)
+
 # Flutter MVI Base
 
 A Flutter application that implements MVI architecture and common libraries.
