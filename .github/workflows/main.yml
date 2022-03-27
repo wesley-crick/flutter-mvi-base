@@ -27,7 +27,8 @@ jobs:
       with:
         flutter-version: '2.10.1'
         channel: 'stable'
-    - run: flutter --version
-    - run: flutter pub get
-    - run: flutter pub run build_runner build
-    - run: flutter test
+    - run: sh ./scripts/run-flutter-tests.sh
+    - uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-artifact
+        path: artifact/
