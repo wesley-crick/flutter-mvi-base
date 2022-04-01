@@ -5,31 +5,19 @@ import '../network/model/user_dto.dart';
 class User{
   int id;
   String name;
-  String email;
-  String gender;
-  String status;
 
   User() :
     id = 0,
-    name = "",
-    email = "",
-    gender = "",
-    status = "";
+    name = "";
 
 
-  User.fromData(this.id, this.name, this.email,this.gender, this.status);
+  User.fromData(this.id, this.name);
 
   User.fromDao(UserDao userDao) :
-        id = userDao.id,
-        name = userDao.name ?? "",
-        email = userDao.email ?? "",
-        gender = userDao.gender ?? "",
-        status = userDao.status ?? "";
+      id = userDao.id,
+      name = userDao.name;
 
   User.fromDto(UserDto userDto) :
-        id = userDto.id ?? 0,
-        name = userDto.name ?? "",
-        email = userDto.email ?? "",
-        gender = userDto.gender ?? "",
-        status = userDto.status ?? "";
+      id = 0,
+      name = userDto.name ?? "";
 }

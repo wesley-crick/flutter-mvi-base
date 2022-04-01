@@ -1,89 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../util/form_factor.dart';
 import '../viewmodel/login_page_action.dart';
 import '../viewmodel/login_page_view_model.dart';
 
 class LoginView extends StatelessWidget {
 
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key) {
+    LoginPageViewModel vm = Get.find();
+    vm.send(GetUsers());
+  }
 
   @override
   Widget build(BuildContext context) =>
       Scaffold(
         appBar: AppBar(
-          title: const Text("Login View Title"),
+          title: const Text("List 'O Names"),
         ),
         body: _buildBody()
       );
 
+  final TextEditingController nameController = TextEditingController();
   Widget _buildBody() => GetBuilder<LoginPageViewModel>(
-      builder: (vm) => LayoutBuilder(
-          builder: (context, constraints) =>
-              Container(
-                padding: constraints.maxWidth < FormFactor.handset
-                    ? EdgeInsets.zero
-                    : const EdgeInsets.all(30.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: "Email address:"),
-                      ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: "Password:"),
-                      ),
-                      Container(
-                        height: 24,
-                      ),
-                      _buildEnterButton(vm),
-                      Container(
-                        height: 24,
-                      ),
-                      TextButton(
-                          onPressed: () => vm.send(
-                              OnResetClicked()
-                          ),
-                          child: const Text("RESET")
-                      ),
-                      Text("User's name': ${vm.state.user?.name}")
-                    ],
-                  ),
-                ),
-              )
-      ),
-  );
+      builder: (vm) {
+        nameController.text = vm.state.name;
 
-  Widget _buildEnterButton(LoginPageViewModel vm) =>
-      !vm.state.isLoading ?
-      ElevatedButton(
-        onPressed: () {
-          vm.send(OnEnterClicked());
-        },
-        child: const Text("Enter"),
-      ) :
-      ElevatedButton(
-        onPressed: null,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
+        return Column(
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: "Enter name: "),
             ),
-
-            Text(" Loading")
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: vm.state.isLoading ? null : () {
+                    vm.send(GetRandomUser());
+                  },
+                  child: const Text("Random Name"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    vm.send(SaveName(nameController.text));
+                  },
+                  child: const Text("Save"),
+                )
+              ],
+            ),
+            Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: vm.state.users.map(
+                          (user) =>
+                              Text(user.name)
+                  ).toList(),
+                ),
+            ),
           ],
-        ),
-      );
+        );
+      }
+  );
 }
