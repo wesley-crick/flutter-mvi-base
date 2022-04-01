@@ -1,19 +1,16 @@
-import 'package:flutter_demo_app/login/network/model/user_dto.dart';
-
 import '../model/user.dart';
 
 class LoginPageState {
   final bool isLoading;
-  final int counter;
-  // TODO: dto's should be converted to view objects(VO)
-  final User? user;
+  final String name;
+  final List<User> users;
 
 //<editor-fold desc="Data Methods">
 
   const LoginPageState({
     required this.isLoading,
-    required this.counter,
-    required this.user,
+    required this.name,
+    required this.users,
   });
 
   @override
@@ -22,46 +19,46 @@ class LoginPageState {
       (other is LoginPageState &&
           runtimeType == other.runtimeType &&
           isLoading == other.isLoading &&
-          counter == other.counter &&
-          user == other.user);
+          name == other.name &&
+          users == other.users);
 
   @override
-  int get hashCode => isLoading.hashCode ^ counter.hashCode ^ user.hashCode;
+  int get hashCode => isLoading.hashCode ^ name.hashCode ^ users.hashCode;
 
   @override
   String toString() {
     return 'LoginPageState{' +
         ' isLoading: $isLoading,' +
-        ' counter: $counter,' +
-        ' user: $user,' +
+        ' name: $name,' +
+        ' users: $users,' +
         '}';
   }
 
   LoginPageState copyWith({
     bool? isLoading,
-    int? counter,
-    User? user,
+    String? name,
+    List<User>? users,
   }) {
     return LoginPageState(
       isLoading: isLoading ?? this.isLoading,
-      counter: counter ?? this.counter,
-      user: user,
+      name: name ?? this.name,
+      users: users ?? this.users,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'isLoading': this.isLoading,
-      'counter': this.counter,
-      'users': this.user,
+      'name': this.name,
+      'users': this.users,
     };
   }
 
   factory LoginPageState.fromMap(Map<String, dynamic> map) {
     return LoginPageState(
       isLoading: map['isLoading'] as bool,
-      counter: map['counter'] as int,
-      user: map['user'] as User,
+      name: map['name'] as String,
+      users: map['users'] as List<User>,
     );
   }
 

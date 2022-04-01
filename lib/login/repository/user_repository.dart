@@ -7,38 +7,67 @@ import 'package:get/get.dart';
 
 import '../../core/database/object_box.dart';
 import '../../objectbox.g.dart';
-import '../network/login_rest_client.dart';
+import '../network/user_rest_client.dart';
 import '../network/model/user_dto.dart';
 
 class UserRepository extends GetxController with UiLoggy {
   final ObjectBox _objectBox = Get.find();
-  late Box<UserDao> userBox = _objectBox.store.box();
+  late final Box<UserDao> _userBox = _objectBox.store.box();
 
-  final LoginRestClient client = Get.find();
+  final UserRestClient client = Get.find();
 
+  /// Fancy code to get a user from the DB then updated from the network
   Rx<User> getUser() {
     var rx = User().obs;
-    loggy.error("Get users async");
     unawaited(_getUserAsync(rx));
-    loggy.error("after users async");
     return rx;
   }
 
   _getUserAsync(Rx<User> rx) async {
-    await Future.microtask(() {
-      UserDao userDao = _getUserDao();
-      loggy.error("UserDao: ${userDao.name}");
-      rx.value = User.fromDao(userDao);
-    });
+    try {
+      await Future.wait<dynamic>([_emitUserFromDao(rx), _emitUserFromDto(rx)]);
+    } catch(e) {
+      loggy.error(e);
+    }
+  }
 
+  _emitUserFromDao(Rx<User> rx) async {
+    await Future.microtask(() {
+      UserDao? userDao = _getUserDao();
+      if(userDao != null) {
+        rx.value = User.fromDao(userDao);
+      }
+    });
+  }
+
+  /// Returns first user or null if none are found
+  UserDao? _getUserDao() {
+    var users = _userBox.getAll();
+    if (users.isNotEmpty) {
+      return users.first;
+    } else {
+      return null;
+    }
+  }
+
+  _emitUserFromDto(Rx<User> rx) async {
     var response = await client.getUsers();
     List<UserDto> users = response.data ?? List.empty();
-    loggy.error("UserDto length: ${users.length}");
     rx.value = User.fromDto(users.first);
   }
 
-  UserDao _getUserDao() {
-    return userBox.getAll().first;
+  saveUser(String name) async {
+    try {
+      await _userBox.putAsync(UserDao(
+          name: name
+      ));
+    } catch(e) {
+      loggy.error(e);
+    }
+  }
+
+  List<User> getUsers() {
+    return _userBox.getAll().map((userDao) => User.fromDao(userDao)).toList();
   }
 
 }
