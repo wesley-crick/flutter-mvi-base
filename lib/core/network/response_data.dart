@@ -5,11 +5,9 @@ part 'response_data.g.dart';
     genericArgumentFactories: true
 )
 class ResponseData<T>{
-  int? code;
-  dynamic meta;
-  List<T>? data;
+  List<T>? results;
 
-  ResponseData({this.code, this.meta, this.data});
+  ResponseData({this.results});
 
   factory ResponseData.fromJson(
       Map<String, dynamic> json,
