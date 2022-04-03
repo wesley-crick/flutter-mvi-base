@@ -16,8 +16,35 @@ class UserRepository extends GetxController with UiLoggy {
 
   final UserRestClient client = Get.find();
 
+  Future<User?> getRandomUser() async {
+    try {
+      var response = await client.getUsers();
+      List<UserDto> users = response.results ?? List.empty();
+      return User.fromDto(users.first);
+    } catch(e) {
+      loggy.error(e);
+      return null;
+    }
+  }
+
+  saveUser(String name) async {
+    try {
+      await _userBox.putAsync(UserDao(
+          name: name
+      ));
+    } catch(e) {
+      loggy.error(e);
+    }
+  }
+
+  List<User> getUsers() {
+    return _userBox.getAll().map((userDao) => User.fromDao(userDao)).toList();
+  }
+
+  //============================================================================
+
   /// Fancy code to get a user from the DB then updated from the network
-  Rx<User> getUser() {
+  Rx<User> _tempgetUser() {
     var rx = User().obs;
     unawaited(_getUserAsync(rx));
     return rx;
@@ -40,6 +67,12 @@ class UserRepository extends GetxController with UiLoggy {
     });
   }
 
+  _emitUserFromDto(Rx<User> rx) async {
+    var response = await client.getUsers();
+    List<UserDto> users = response.results ?? List.empty();
+    rx.value = User.fromDto(users.first);
+  }
+
   /// Returns first user or null if none are found
   UserDao? _getUserDao() {
     var users = _userBox.getAll();
@@ -48,26 +81,6 @@ class UserRepository extends GetxController with UiLoggy {
     } else {
       return null;
     }
-  }
-
-  _emitUserFromDto(Rx<User> rx) async {
-    var response = await client.getUsers();
-    List<UserDto> users = response.data ?? List.empty();
-    rx.value = User.fromDto(users.first);
-  }
-
-  saveUser(String name) async {
-    try {
-      await _userBox.putAsync(UserDao(
-          name: name
-      ));
-    } catch(e) {
-      loggy.error(e);
-    }
-  }
-
-  List<User> getUsers() {
-    return _userBox.getAll().map((userDao) => User.fromDao(userDao)).toList();
   }
 
 }

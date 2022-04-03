@@ -19,5 +19,5 @@ class User{
 
   User.fromDto(UserDto userDto) :
       id = 0,
-      name = userDto.name ?? "";
+      name = "${userDto.name?.first} ${userDto.name?.last}";
 }

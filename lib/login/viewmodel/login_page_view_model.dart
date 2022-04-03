@@ -47,9 +47,10 @@ class LoginPageViewModel
         )
     );
 
-    _userRepository.getUser().listen((user) {
+    User? user = await _userRepository.getRandomUser();
+    if (user != null) {
       send(UpdateUser(user));
-    });
+    }
   }
 
   void _reduceUserLoaded(User user) {

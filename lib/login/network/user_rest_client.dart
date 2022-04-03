@@ -6,10 +6,10 @@ import 'model/user_dto.dart';
 
 part 'user_rest_client.g.dart';
 
-@RestApi(baseUrl: "https://gorest.co.in/public-api")
+@RestApi(baseUrl: "https://randomuser.me/api/")
 abstract class UserRestClient {
   factory UserRestClient(Dio dio, {String baseUrl}) = _UserRestClient;
 
-  @GET("/users")
+  @GET("/")
   Future<ResponseData<UserDto>> getUsers();
 }
