@@ -13,26 +13,26 @@ abstract class StatefulViewModel<State, Action>
     _listenForAction();
   }
 
-  void _listenForAction() {
+  _listenForAction() {
     action.listen((a) {
       if(a != null) {
         loggy.debug("Reducing ${a.runtimeType}");
-        reduce(a);
+        _updateState(reduce(a));
         update();
       }
     });
   }
 
-  void send(Action action) {
+  send(Action action) {
     this.action.value = action;
   }
 
-  void updateState(State state) {
+  _updateState(State state) {
     loggy.debug("Previous state: $_state");
     _state = state;
     loggy.debug("Updated state: $_state");
   }
 
   /// Implement a switch case for parsing actions sent to your view model.
-  void reduce(Action action);
+  State reduce(Action action);
 }

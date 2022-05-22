@@ -10,6 +10,7 @@ class LoginPageAction {
   factory LoginPageAction.updateUsers(List<User> users) = UpdateUsers;
 
   factory LoginPageAction.saveName(String name) = SaveName;
+  factory LoginPageAction.deleteName(User user) = DeleteUser;
 }
 
 class GetRandomUser extends LoginPageAction {
@@ -34,4 +35,9 @@ class SaveName extends LoginPageAction {
   String name;
 
   SaveName(this.name): super._();
+}
+class DeleteUser extends LoginPageAction {
+  User user;
+
+  DeleteUser(this.user): super._();
 }

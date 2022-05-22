@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../util/dimens.dart';
 import '../viewmodel/login_page_action.dart';
 import '../viewmodel/login_page_view_model.dart';
 
@@ -54,7 +55,28 @@ class LoginView extends StatelessWidget {
                   shrinkWrap: true,
                   children: vm.state.users.map(
                           (user) =>
-                              Text(user.name)
+                              Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: Dimens.small,
+                                      right: Dimens.small,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(user.name),
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () => vm.send(DeleteUser(user)),
+                                          child: const Text("Delete"),
+                                          style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                          ),
+                                      )
+                                    ]
+                                  ),
+                                )
+                              )
                   ).toList(),
                 ),
             ),

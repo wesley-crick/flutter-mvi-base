@@ -10,7 +10,7 @@ import '../../objectbox.g.dart';
 import '../network/user_rest_client.dart';
 import '../network/model/user_dto.dart';
 
-class UserRepository extends GetxController with UiLoggy {
+class UserRepository with UiLoggy {
   final ObjectBox _objectBox = Get.find();
   late final Box<UserDao> _userBox = _objectBox.store.box();
 
@@ -38,7 +38,13 @@ class UserRepository extends GetxController with UiLoggy {
   }
 
   List<User> getUsers() {
-    return _userBox.getAll().map((userDao) => User.fromDao(userDao)).toList();
+    return _userBox.getAll().map( (userDao) =>
+      User.fromDao(userDao)
+    ).toList();
+  }
+
+  deleteUser(User user) {
+    _userBox.remove(user.id);
   }
 
   //============================================================================
