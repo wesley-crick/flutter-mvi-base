@@ -19,70 +19,79 @@ class LoginPageViewModel
   );
 
   @override
-  void reduce(LoginPageAction action) {
+  LoginPageState reduce(LoginPageAction action) {
       switch(action.runtimeType) {
         case GetRandomUser:
-          _reduceGetRandomUser();
-          break;
+          return _reduceGetRandomUser();
         case UpdateUser:
-          _reduceUserLoaded((action as UpdateUser).user);
-          break;
+          return _reduceUserLoaded((action as UpdateUser).user);
         case SaveName:
-          _reduceSaveName((action as SaveName).name);
-          break;
+          return _reduceSaveName((action as SaveName).name);
         case GetUsers:
-          _reduceGetUsers();
-          break;
+          return _reduceGetUsers();
         case UpdateUsers:
-          _reduceUpdateUsers((action as UpdateUsers).users);
-          break;
+          return _reduceUpdateUsers((action as UpdateUsers).users);
+        case DeleteUser:
+          return _reduceDeleteUser((action as DeleteUser).user);
       }
+      return state;
   }
 
-  void _reduceGetRandomUser() async {
-    updateState(
-        state.copyWith(
-          isLoading: true,
-          name: "",
-        )
+  LoginPageState _reduceGetRandomUser() {
+    _getRandomUser();
+    return state.copyWith(
+      isLoading: true,
+      name: "",
     );
+  }
 
+  _getRandomUser() async {
     User? user = await _userRepository.getRandomUser();
     if (user != null) {
       send(UpdateUser(user));
     }
   }
 
-  void _reduceUserLoaded(User user) {
-    updateState(
-        state.copyWith(
-          isLoading: false,
-          name: user.name,
-        )
+  LoginPageState _reduceUserLoaded(User user) {
+    return state.copyWith(
+      isLoading: false,
+      name: user.name,
     );
   }
 
-  _reduceSaveName(String name) async {
-    await _userRepository.saveUser(name);
-    updateState(
-      state.copyWith(
-        name: ""
-      )
+  LoginPageState _reduceSaveName(String name) {
+    _saveUser(name);
+    return state.copyWith(
+      name: ""
     );
+  }
+
+  void _saveUser(String name) async {
+    await _userRepository.saveUser(name);
     send(GetUsers());
   }
 
-  _reduceGetUsers() {
+  LoginPageState _reduceGetUsers() {
     send(UpdateUsers(
       _userRepository.getUsers()
     ));
+
+    return state;
   }
 
-  _reduceUpdateUsers(List<User> users) {
-    updateState(
-      state.copyWith(
-        users: users
-      )
+  LoginPageState _reduceUpdateUsers(List<User> users) {
+    return state.copyWith(
+      users: users
     );
+  }
+
+  LoginPageState _reduceDeleteUser(User user) {
+    deleteUser(user);
+    return state;
+  }
+
+  void deleteUser(User user) async {
+    await _userRepository.deleteUser(user);
+    send(GetUsers());
   }
 }
